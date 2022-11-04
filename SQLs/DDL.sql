@@ -1,0 +1,43 @@
+DROP database if exists menjador;
+create database if not exists menjador;
+use menjador;
+
+CREATE TABLE IF NOT EXISTS roles (
+id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT, 
+nombre VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user(
+id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+username VARCHAR(30) NOT NULL,
+email VARCHAR(50) NOT NULL,
+idrole INT UNSIGNED not null REFERENCES roles(id) on delete cascade on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS orden(
+id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+fecha DATETIME NOT NULL,
+iduser INT UNSIGNED NOT NULL REFERENCES user(id) on delete cascade on update cascade
+);
+
+
+CREATE TABLE IF NOT EXISTS dish (
+id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(30) NOT NULL,
+image MEDIUMBLOB NOT NULL,
+idorder INT UNSIGNED NOT NULL REFERENCES dishorder(idDish) on delete cascade on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS dishorder (
+idorder INT UNSIGNED,
+iddish INT UNSIGNED, 
+PRIMARY KEY (idorder,iddish),
+FOREIGN KEY (idorder) REFERENCES orden(id) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (iddish) REFERENCES dish(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS category(
+id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(30) NOT NULL
+);
